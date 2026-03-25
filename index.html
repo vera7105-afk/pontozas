@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Természettudományos Nap - Pontozótábla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Ensures it perfectly centers vertically to fit one screen */
+            padding: 10px;
+            color: var(--dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 6px 4px;
+            text-align: center;
+            border: 1px solid #e0e6ed;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--dark);
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        th.team-header {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        th.team-header:hover {
+            background: #34495e;
+        }
+
+        th:first-child {
+            text-align: left;
+            background: var(--dark);
+            min-width: 180px;
+            padding-left: 10px;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            text-align: left;
+            background: #f8fafc;
+            color: var(--dark);
+            padding-left: 10px;
+        }
+
+        tbody tr:hover {
+            background: #f1f8e9;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 4px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        tfoot td {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: #eef2f5;
+        }
+
+        .total-row td {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            padding: 8px 4px;
+        }
+
+        .total-row td:first-child {
+            color: var(--dark);
+        }
+
+        .rank-row td {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            padding: 8px 4px;
+        }
+
+        .rank-row td:first-child {
+            color: var(--dark);
+        }
+
+        .rank-1 { color: #f1c40f !important; font-size: 1.5rem !important; text-shadow: 0 1px 2px rgba(241,196,15,0.3); } 
+        .rank-2 { color: #95a5a6 !important; font-size: 1.4rem !important; text-shadow: 0 1px 2px rgba(149,165,166,0.3); } 
+        .rank-3 { color: #d35400 !important; font-size: 1.35rem !important; text-shadow: 0 1px 2px rgba(211,84,0,0.3); } 
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        /* Nyomtatási és PDF nézet optimizálása */
+        @media print {
+            body {
+                background: white !important;
+                align-items: flex-start;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                background: white !important;
+            }
+            .action-buttons {
+                display: none !important;
+            }
+            h1 {
+                color: black !important;
+                text-shadow: none !important;
+                margin-top: 0;
+            }
+            th, td {
+                border: 2px solid #000 !important;
+                color: #000 !important;
+                padding: 8px 4px !important;
+            }
+            th {
+                background: #e0e0e0 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            td:first-child {
+                background: #f8f8f8 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            input[type="number"] {
+                border: none !important;
+                background: transparent !important;
+                font-weight: bold !important;
+                color: black !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            .rank-1, .rank-2, .rank-3 {
+                text-shadow: none !important;
+            }
+            /* Kényszerítjük a fekvő (landscape) tájolást nyomtatáskor */
+            @page {
+                size: landscape;
+                margin: 1cm;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5rem; }
+            input[type="number"] { width: 45px; font-size: 0.9rem; }
+            th, td { padding: 4px 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🦉 Természettudományos Nap - Pontozótábla 🔬</h1>
+        
+        <div class="table-wrapper">
+            <table id="scoreTable">
+                <thead>
+                    <tr>
+                        <th>Feladatok \ Csapatok</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">1. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">2. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">3. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">4. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">5. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">6. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">7. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">8. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">9. Csapat</th>
+                        <th contenteditable="true" class="team-header" title="Kattints a név átírásához">10. Csapat</th>
+                    </tr>
+                </thead>
+                <tbody id="taskBody">
+                    <!-- Javascript tölti ki -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row" id="totalRow">
+                        <td>Összesen</td>
+                        <!-- Javascript tölti ki -->
+                    </tr>
+                    <tr class="rank-row" id="rankRow">
+                        <td>Helyezés</td>
+                        <!-- Javascript tölti ki -->
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn" onclick="window.print()">🖨️ Nyomtatás / Mentés PDF-ként</button>
+        </div>
+    </div>
+
+    <script>
+        const tasks = [
+            "1. Ki vagyok én?",
+            "2. Rejtvény",
+            "3. Közmondások / Európa",
+            "4. Memória",
+            "5. Kísérlet",
+            "6. Kvíz",
+            "7. Mi a helyes? / Emojik",
+            "8. Állati nyomok",
+            "9. Fa-meghatározás",
+            "10. Akadálypálya"
+        ];
+        
+        const numTeams = 10;
+        const tbody = document.getElementById('taskBody');
+        const totalRow = document.getElementById('totalRow');
+        const rankRow = document.getElementById('rankRow');
+
+        // Táblázat sorainak inicializálása
+        tasks.forEach((task, taskIndex) => {
+            let tr = document.createElement('tr');
+            
+            let tdName = document.createElement('td');
+            tdName.textContent = task;
+            tr.appendChild(tdName);
+
+            for (let t = 1; t <= numTeams; t++) {
+                let td = document.createElement('td');
+                let input = document.createElement('input');
+                input.type = 'number';
+                input.min = '0';
+                input.id = `input-${taskIndex}-${t}`;
+                input.addEventListener('input', calculateScores);
+                td.appendChild(input);
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        });
+
+        // Eredmény és helyezés cellák inicializálása
+        for (let t = 1; t <= numTeams; t++) {
+            let tdTotal = document.createElement('td');
+            tdTotal.id = `total-${t}`;
+            tdTotal.textContent = '0';
+            totalRow.appendChild(tdTotal);
+
+            let tdRank = document.createElement('td');
+            tdRank.id = `rank-${t}`;
+            tdRank.textContent = '-';
+            rankRow.appendChild(tdRank);
+        }
+
+        function calculateScores() {
+            let scores = new Array(numTeams).fill(0);
+
+            // Pontok összegzése
+            for (let taskIndex = 0; taskIndex < tasks.length; taskIndex++) {
+                for (let t = 1; t <= numTeams; t++) {
+                    let val = parseFloat(document.getElementById(`input-${taskIndex}-${t}`).value);
+                    if (!isNaN(val)) {
+                        scores[t - 1] += val;
+                    }
+                }
+            }
+
+            // Összesen kiírása
+            for (let t = 1; t <= numTeams; t++) {
+                document.getElementById(`total-${t}`).textContent = scores[t - 1];
+            }
+
+            // Helyezések kiszámítása
+            let ranks = scores.map(s => {
+                let rank = 1;
+                for (let otherScore of scores) {
+                    if (otherScore > s) {
+                        rank++;
+                    }
+                }
+                return rank;
+            });
+
+            // Helyezések megjelenítése
+            for (let t = 1; t <= numTeams; t++) {
+                let rankCell = document.getElementById(`rank-${t}`);
+                let rankValue = ranks[t - 1];
+                
+                rankCell.textContent = rankValue + ".";
+                
+                rankCell.className = '';
+                if (rankValue === 1 && scores[t-1] > 0) rankCell.classList.add('rank-1');
+                else if (rankValue === 2 && scores[t-1] > 0) rankCell.classList.add('rank-2');
+                else if (rankValue === 3 && scores[t-1] > 0) rankCell.classList.add('rank-3');
+            }
+        }
+        
+        // Ablak bezárás előtti figyelmeztetés
+        window.addEventListener('beforeunload', function (e) {
+            let hasData = false;
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                if(input.value !== '') hasData = true;
+            });
+            
+            if(hasData) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
